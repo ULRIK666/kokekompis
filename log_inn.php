@@ -11,9 +11,9 @@
     <title>Loginn</title>
 </head>
 
-<body>    
-    
-<header>
+<body>
+
+    <header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -27,27 +27,25 @@
             </div>
             <a href="index.php"><img class="logo" src="images/logo/kokekompis.png" alt="menu icon"></a>
         </div>
-        <div class="space_between">
-            <div class="søke_input">
-                <div class="space_between">
-                    <img class="img-icon" src="images/icon-img/search_icon.png" alt="søke ikon">
-                    <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
-                </div>
-            </div>
-            <div>
-                <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png"
-                        alt="profile icon"></a>
-                <a href="log_inn.php"><img class="img-icon" src="images/icon-img/profile_icon.png"
-                        alt="profile icon"></a>
-            </div>
+
+        <div>
+            <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png" alt="profile icon"></a>
+            <a href="log_inn.php"><img class="img-icon" src="images/icon-img/profile_icon.png" alt="profile icon"></a>
         </div>
     </header>
-    
+
     <div class="center">
         <div class="box">
             <div class="innhold_plassering">
 
                 <h3>Login</h3>
+                <?php
+                session_start();
+                if (isset ($_SESSION['error_message'])) {
+                    echo '<p class="error-message">' . $_SESSION['error_message'] . '</p>';
+                    unset($_SESSION['error_message']);
+                }
+                ?>
 
                 <form action="includes/loginhandler.inc.php" method="POST">
                     <input class="input_width" type="text" name="brukernavn" placeholder="Username" requierd>

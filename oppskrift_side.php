@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <header>
+<header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -23,12 +23,19 @@
             <a href="index.php"><img class="logo" src="images/logo/kokekompis.png" alt="menu icon"></a>
         </div>
         <div class="space_between">
-            <div class="søke_input">
-                <div class="space_between">
-                    <img class="img-icon" src="images/icon-img/search_icon.png" alt="søke ikon">
-                    <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
+            <div class="search_and_suggestions">
+                <div class="søke_input">
+                    <div class="space_between">
+                        <button id="searchButton" style="border: none; background: none; padding: 0;"><img
+                                class="img-icon" src="images/icon-img/search_icon.png" alt="søke ikon"></button>
+                        <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
+                        <div id="searchSuggestions" class="search-suggestions"></div> <!-- Ny div for søkeforslag -->
+                    </div>
+                </div>
+                <div class="suggestions">
                 </div>
             </div>
+
             <div>
                 <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png"
                         alt="profile icon"></a>
@@ -38,15 +45,14 @@
         </div>
     </header>
 
-
     <div class="space_between">
         <?php
         require_once "includes/dbh.inc.php";
 
         // Sjekk om id er sendt med i URLen
-        if (isset($_GET['id'])) {
+        if ($_GET['id']) {
             // Hent id fra URLen og beskytt mot SQL-injeksjon
-            $id = intval($_GET['id']);
+            $id = $_GET['id'];
 
             // Forbered og utfør spørringen med parameteren
             $oppskriftQuery = "SELECT * FROM oppskrifter WHERE id = :id";
@@ -66,24 +72,45 @@
                     $vansklighetgrad = $oppskrift['vansklighetgrad'];
                     $beregnet_tid = $oppskrift['beregnet_tid'];
                     $id = $oppskrift['id'];
-
+                        
                     // Utskrift av oppskriftdetaljer
                     echo "<div class='oppskrift'>";
-                    echo "    <img class='maxwidth' src='images/food_images/$bilde_url' alt='mat bilde'>";
+                    echo "    <img class='maxwidth' src='images/food_images/$bilde_url' alt='mat bilde'>\n";
                     echo "</div>";
                     echo "<div class='oppskrift'>";
-                    echo "<div class='space_between'>";
+                    echo "<div class='space_between'>\n";
                     echo "<div class='ingridienser'>";
                     echo "<h3>ingridienser:<h3>";
-                    echo "</div>";
+                    //
+                    //LEGGE TIL FAKTISKE INGRIDIENSER FRA DATABASEN 
+                    //
+                    echo "</div>\n";
                     echo "<div class='om'>";
                     echo "<div class='bilde_tittel'>$bilde_tittel</div>";
-                    echo "<div class='rating'></div>";
+                    echo "<div class='rating'></div>\n";
                     echo "<div class='price'>$beregnet_tid</div>";
-                    echo "<div class='price'>$vansklighetgrad</div>";
+                    echo "<div class='price'>$vansklighetgrad</div>\n";
                     echo "</div>";
                     //ny linje
+
                     echo "</div>";
+                    echo "<div>\n";
+                    echo "<a href='legg_i_handlekurv.php?id=<?= $id ?>' class='button'>Legg til oppskrift i handlekurv</a>
+
+
+                    ";
+                    echo "</div>\n";
+                    echo "<div class='rating-container'>";
+                    echo "<div class='rating-stars'>
+                    <input type='radio' name='rating' id='rs0' checked><label for='rs0'></label>
+                    <input type='radio' name='rating' id='rs1'><label for='rs1'></label>
+                    <input type='radio' name='rating' id='rs2'><label for='rs2'></label>
+                    <input type='radio' name='rating' id='rs3'><label for='rs3'></label>
+                    <input type='radio' name='rating' id='rs4'><label for='rs4'></label>
+                    <input type='radio' name='rating' id='rs5'><label for='rs5'></label>
+                    <span class='rating-counter'></span>
+                </div>";
+                echo "</div>";
                 }
             }
         } else {

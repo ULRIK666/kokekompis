@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //hente brukernavn og passord
     $brukernavn = $_POST["brukernavn"];
@@ -11,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         # 1 - finner bruker
 
-        $query = "select id, passord from brukere where brukernavn = :brukernavn";
+        $query = "SELECT id, passord FROM brukere WHERE brukernavn = :brukernavn";
 
         $stmt = $pdo->prepare($query);
 
@@ -23,8 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         if (empty($result)) {
-            echo "<p>Ukjent brukernavn!</p>";
-            return;
+            $_SESSION['error_message'] = "Ukjent brukernavn eller passord!";
+            header("location: ../log_inn.php");
+            exit();
         } else {
             $row = $result[0];
             $signup_pwd = $row["passord"];
@@ -32,24 +35,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         # 2 - sjekker passord
-        session_start();
+
         if ($passord == $signup_pwd) {
             $_SESSION['bruker_id'] = $bruker_id;
+            header("location: ../index.php");
+            exit();
         } else {
-            $_SESSION['id'] = 0;  // 0 betyr ikke logget inn
-            echo "<p>Feil passord</p>";
-            return;
+            $_SESSION['error_message'] = "Feil passord";
+            header("location: ../log_inn.php");
+            exit();
         }
-
-        $pdo = null;
-        $stmt = null;
-
-        header("location: ../index.php");
-
-        die();
     } catch (PDOException $e) {
-        die("Query failed:" . $e->getMessage());
+        $_SESSION['error_message'] = "Query failed: " . $e->getMessage();
+        header("location: ../log_inn.php");
+        exit();
     }
 } else {
     header("location: ../log_inn.php");
+    exit();
 }
+?>
