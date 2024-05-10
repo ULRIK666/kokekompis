@@ -33,10 +33,21 @@ if (isset($_GET['q'])) {
         }
 
     }
+
 /*
     // SQL-spørring for å hente søkeforslag basert på det brukeren har skrevet inn
     $searchQuery = "SELECT tittel FROM oppskrifter WHERE tittel LIKE ? LIMIT 5";
     $stmt = $pdo->prepare($searchQuery);
+     
+     
+     
+
+
+     
+     
+     
+     
+     
     $stmt->execute(["%$searchText%"]);
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 */

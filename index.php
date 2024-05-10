@@ -136,6 +136,10 @@
             }
         }
 
+        window.onload = function () {
+        visOppskrifter('alle');
+    };
+
         var kategorierDiv = document.getElementsByClassName("matkategori");
         for (var i = 0; i < kategorierDiv.length; i++) {
             kategorierDiv[i].addEventListener("click", function () {
@@ -143,6 +147,8 @@
             });
         }
     </script>
+    
+    <script src="js/script.js"></script>
 
 </body>
 
