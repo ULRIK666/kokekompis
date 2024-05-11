@@ -47,7 +47,7 @@
 
     <div class="space_between">
         <?php
-        require_once "includes/dbh.inc.php";
+        require "includes/dbh.inc.php";
 
         // Sjekk om id er sendt med i URLen
         if ($_GET['id']) {
@@ -71,7 +71,9 @@
                     $bilde_tittel = $oppskrift['tittel'];
                     $vansklighetgrad = $oppskrift['vansklighetgrad'];
                     $beregnet_tid = $oppskrift['beregnet_tid'];
-                    $id = $oppskrift['id'];
+                    $oppskrift_id = $oppskrift['id'];
+                    $fremgangsmåte = $oppskrift['fremgangsmåte'];
+
                         
                     // Utskrift av oppskriftdetaljer
                     echo "<div class='oppskrift'>";
@@ -79,11 +81,11 @@
                     echo "</div>";
                     echo "<div class='oppskrift'>";
                     echo "<div class='space_between'>\n";
-                    echo "<div class='ingridienser'>";
-                    echo "<h3>ingridienser:<h3>";
-                    //
-                    //LEGGE TIL FAKTISKE INGRIDIENSER FRA DATABASEN 
-                    //
+                    echo "<div class='ingredienser'>";
+                    echo "<h3>Ingredienser:<h3>";
+                    echo visingredienser($oppskrift_id);
+                    echo "<h3>Fremgangsmåte:<h3>";
+                    echo $fremgangsmåte;
                     echo "</div>\n";
                     echo "<div class='om'>";
                     echo "<div class='bilde_tittel'>$bilde_tittel</div>";
@@ -119,6 +121,33 @@
         } else {
             // Hvis id ikke er sendt med i URLen, gi en feilmelding
             echo "<p>Mangler oppskrifts-ID i URLen</p>";
+        }
+
+        function visingredienser($oppskrift_id) {
+            require "includes/dbh.inc.php";
+
+            $resultat = "";
+
+             // Forbered og utfør spørringen med parameteren
+             $ingrediensQuery = "SELECT * FROM ingrediens_mengde INNER JOIN ingredienser ON ingrediens_mengde.ingrediens_id = ingredienser.id where ingrediens_mengde.oppskrift_id = :ingid";
+             $stmt = $pdo->prepare($ingrediensQuery);
+             $stmt->bindParam(':ingid', $oppskrift_id, PDO::PARAM_INT);
+             $stmt->execute();
+             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+ 
+             // Sjekk om resultatet er tomt eller ikke
+             if (empty($result)) {
+                 return "<p>Fant ingen ingredienser for id: $oppskrift_id</p>";
+             } else {
+                 // Loop gjennom resultatene (selv om det bare er én, siden id er unik)
+                 foreach ($result as $ingrediens) {
+                    $mengde = $ingrediens['mengde'];
+                    $enhet = $ingrediens['enhet'];
+                    $ingrediensnavn = $ingrediens['ingrediens'];
+                    $resultat .= "$mengde $enhet $ingrediensnavn<br>\n";
+                }
+            }
+            return $resultat;
         }
         ?>
 
