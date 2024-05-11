@@ -50,3 +50,35 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+var oppskrifter = document.getElementsByClassName("recipie");
+
+function visOppskrifter(kategori_id) {
+    for (var i = 0; i < oppskrifter.length; i++) {
+        oppskrifter[i].style.display = "none";
+    }
+    if (kategori_id == 'alle') {
+        for (var i = 0; i < oppskrifter.length; i++) {
+            oppskrifter[i].style.display = "block";
+        }
+    } else {
+        for (var i = 0; i < oppskrifter.length; i++) {
+            if (oppskrifter[i].getAttribute("data-kategori-id") == kategori_id) {
+                oppskrifter[i].style.display = "block";
+            }
+        }
+    }
+}
+
+// Vis oppskriftene for kategorien "Alle" når siden lastes
+window.onload = function () {
+    visOppskrifter('alle');
+};
+
+// Lytte på klikk på kategoriene og vise relevante oppskrifter
+var kategorierDiv = document.getElementsByClassName("matkategori");
+for (var i = 0; i < kategorierDiv.length; i++) {
+    kategorierDiv[i].addEventListener("click", function () {
+        visOppskrifter(this.getAttribute("data-kategori-id"));
+    });
+}

@@ -87,9 +87,10 @@
                     echo "</div>\n";
                     echo "<div class='om'>";
                     echo "<div class='bilde_tittel'>$bilde_tittel</div>";
-                    echo "<div class='rating'></div>\n";
-                    echo "<div class='price'>$beregnet_tid</div>";
-                    echo "<div class='price'>$vansklighetgrad</div>\n";
+                    echo "<div class='oppskrift_info'>Nivå: $vansklighetgrad</div>\n";
+                    echo "<div class='oppskrift_info'>Tid: $beregnet_tid</div>";
+                    echo "<div class='oppskrift_info'>Rating:</div>\n";
+
                     echo "</div>";
                     //ny linje
 
@@ -101,6 +102,8 @@
                     ";
                     echo "</div>\n";
                     echo "<div class='rating-container'>";
+                    echo "<a href='legg_til_vurdering.php?id=<?= $id ?>' class='button'>Legg til vurdering</a>";
+
                     echo "<div class='rating-stars'>
                     <input type='radio' name='rating' id='rs0' checked><label for='rs0'></label>
                     <input type='radio' name='rating' id='rs1'><label for='rs1'></label>

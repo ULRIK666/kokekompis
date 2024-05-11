@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,11 +43,25 @@
             </div>
 
             <div>
-                <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png"
-                        alt="profile icon"></a>
-                <a href="log_inn.php"><img class="img-icon" src="images/icon-img/profile_icon.png"
-                        alt="profile icon"></a>
-            </div>
+    <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png" alt="profile icon"></a>
+
+    <a href="log_inn.php"><img class="img-icon" src="images/icon-img/profile_icon.png" alt="profile icon"></a>
+    <div class="user-info">
+        <?php
+        if (isset($_SESSION['bruker_id'])) {
+            $id = $_SESSION['bruker_id']; 
+                require_once "includes/dbh.inc.php";
+                require_once "includes/common.php";
+                $info = getbrukerinfo($id);
+
+                echo "<span>Logget inn som: <br> $info[navn]  </span>";
+        } else {
+            echo "Du er ikke logget inn";            
+        }
+        ?>
+    </div>
+</div>
+
         </div>
     </header>
 
@@ -107,46 +126,6 @@
             ?>
         </div>
     </div>
-
-    <script>
-        <?php
-        // Generer JavaScript for å vise oppskrifter basert på valgt kategori
-        echo "var kategorier = [";
-        foreach ($kategorier as $kategori) {
-            echo "'" . $kategori['id'] . "',";
-        }
-        echo "'alle'];"; // Legg til 'alle' i JavaScript-arrayen for kategorier
-        ?>
-        var oppskrifter = document.getElementsByClassName("recipie");
-
-        function visOppskrifter(kategori_id) {
-            for (var i = 0; i < oppskrifter.length; i++) {
-                oppskrifter[i].style.display = "none";
-            }
-            if (kategori_id == 'alle') {
-                for (var i = 0; i < oppskrifter.length; i++) {
-                    oppskrifter[i].style.display = "block";
-                }
-            } else {
-                for (var i = 0; i < oppskrifter.length; i++) {
-                    if (oppskrifter[i].getAttribute("data-kategori-id") == kategori_id) {
-                        oppskrifter[i].style.display = "block";
-                    }
-                }
-            }
-        }
-
-        window.onload = function () {
-        visOppskrifter('alle');
-    };
-
-        var kategorierDiv = document.getElementsByClassName("matkategori");
-        for (var i = 0; i < kategorierDiv.length; i++) {
-            kategorierDiv[i].addEventListener("click", function () {
-                visOppskrifter(this.getAttribute("data-kategori-id"));
-            });
-        }
-    </script>
     
     <script src="js/script.js"></script>
 

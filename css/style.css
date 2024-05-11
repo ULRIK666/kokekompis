@@ -124,7 +124,7 @@ header {
 }
 
 /* setter avstand og størrelse på teksten */
-.price {
+.oppskrift_info {
     margin-top: 5px;
     font-weight: bold;
 }
