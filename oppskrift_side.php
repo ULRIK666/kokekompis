@@ -9,7 +9,8 @@
 </head>
 
 <body>
-    <header>
+    
+<header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -26,8 +27,8 @@
             <div class="search_and_suggestions">
                 <div class="søke_input">
                     <div class="space_between">
-                        <button id="searchButton" style="border: none; background: none; padding: 0;"><img
-                                class="img-icon" src="images/icon-img/search_icon.png" alt="søke ikon"></button>
+                        <button id="searchButton"><img class="img-icon" src="images/icon-img/search_icon.png"
+                                alt="søke ikon"></button>
                         <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
                         <div id="searchSuggestions" class="search-suggestions"></div> <!-- Ny div for søkeforslag -->
                     </div>
@@ -39,9 +40,26 @@
             <div>
                 <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png"
                         alt="profile icon"></a>
+
                 <a href="log_inn.php"><img class="img-icon" src="images/icon-img/profile_icon.png"
                         alt="profile icon"></a>
+                <div class="user-info">
+                    <!-- forteller hvem som er logget in -->
+                    <?php
+                    if (isset($_SESSION['bruker_id'])) {
+                        $id = $_SESSION['bruker_id'];
+                        require_once "includes/dbh.inc.php";
+                        require_once "includes/common.php";
+                        $info = getbrukerinfo($id);
+
+                        echo "<span>Logget inn som: <br> $info[navn]  </span>";
+                    } else {
+                        echo "Du er ikke logget inn";
+                    }
+                    ?>
+                </div>
             </div>
+
         </div>
     </header>
 

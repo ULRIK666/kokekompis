@@ -9,11 +9,12 @@
 </head>
 
 <body>
-    <header>
+<header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
                 <div class="dropdown-content">
+
                     <a href="faq.php">FAQ</a>
                     <a href="log_inn.php">Log In</a>
                     <a href="signup.php">Sign Up</a>
@@ -21,12 +22,34 @@
             </div>
             <a href="index.php"><img class="logo" src="images/logo/kokekompis.png" alt="menu icon"></a>
         </div>
+        <div class="space_between">
 
-        <div>
-            <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png" alt="profile icon"></a>
-            <a href="log_inn.php"><img class="img-icon" src="images/icon-img/profile_icon.png" alt="profile icon"></a>
+            <div>
+                <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png"
+                        alt="profile icon"></a>
+
+                <a href="log_inn.php"><img class="img-icon" src="images/icon-img/profile_icon.png"
+                        alt="profile icon"></a>
+                <div class="user-info">
+                    <!-- forteller hvem som er logget in -->
+                    <?php
+                    if (isset($_SESSION['bruker_id'])) {
+                        $id = $_SESSION['bruker_id'];
+                        require_once "includes/dbh.inc.php";
+                        require_once "includes/common.php";
+                        $info = getbrukerinfo($id);
+
+                        echo "<span>Logget inn som: <br> $info[navn]  </span>";
+                    } else {
+                        echo "Du er ikke logget inn";
+                    }
+                    ?>
+                </div>
+            </div>
+
         </div>
     </header>
+    
     <div class="center">
         <div class="handlekurv">
             <table width='100%'>
