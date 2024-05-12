@@ -14,8 +14,8 @@ session_start();
 </head>
 
 <body>
-    
-<header>
+
+    <header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -32,8 +32,8 @@ session_start();
             <div class="search_and_suggestions">
                 <div class="søke_input">
                     <div class="space_between">
-                        <button id="searchButton"><img
-                                class="img-icon" src="images/icon-img/search_icon.png" alt="søke ikon"></button>
+                        <button id="searchButton"><img class="img-icon" src="images/icon-img/search_icon.png"
+                                alt="søke ikon"></button>
                         <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
                         <div id="searchSuggestions" class="search-suggestions"></div> <!-- Ny div for søkeforslag -->
                     </div>
@@ -43,24 +43,27 @@ session_start();
             </div>
 
             <div>
-    <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png" alt="profile icon"></a>
+                <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png"
+                        alt="profile icon"></a>
 
-    <a href="log_inn.php"><img class="img-icon" src="images/icon-img/profile_icon.png" alt="profile icon"></a>
-    <div class="user-info">
-        <?php
-        if (isset($_SESSION['bruker_id'])) {
-            $id = $_SESSION['bruker_id']; 
-                require_once "includes/dbh.inc.php";
-                require_once "includes/common.php";
-                $info = getbrukerinfo($id);
+                <a href="log_inn.php"><img class="img-icon" src="images/icon-img/profile_icon.png"
+                        alt="profile icon"></a>
+                <div class="user-info">
+                    <!-- forteller hvem som er logget in -->
+                    <?php
+                    if (isset($_SESSION['bruker_id'])) {
+                        $id = $_SESSION['bruker_id'];
+                        require_once "includes/dbh.inc.php";
+                        require_once "includes/common.php";
+                        $info = getbrukerinfo($id);
 
-                echo "<span>Logget inn som: <br> $info[navn]  </span>";
-        } else {
-            echo "Du er ikke logget inn";            
-        }
-        ?>
-    </div>
-</div>
+                        echo "<span>Logget inn som: <br> $info[navn]  </span>";
+                    } else {
+                        echo "Du er ikke logget inn";
+                    }
+                    ?>
+                </div>
+            </div>
 
         </div>
     </header>
@@ -75,12 +78,13 @@ session_start();
                 <?php
                 require_once "includes/dbh.inc.php";
 
-                // Hente kategorier fra databasen
+                // henter kategorier fra databasen
                 $kategoriQuery = "SELECT * FROM kategori";
                 $stmt = $pdo->prepare($kategoriQuery);
                 $stmt->execute();
                 $kategorier = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+                //skjekker om det er kategorier og skriver de ut hvis det er det 
                 if (empty($kategorier)) {
                     echo "<p>Fant ikke noen kategorier</p>";
                 } else {
@@ -99,12 +103,13 @@ session_start();
     <div class="center">
         <div class="product-container">
             <?php
-            // Hente oppskrifter fra databasen
+            // henter oppskrifter og infoen deres fra databasen
             $oppskriftQuery = "SELECT oppskrifter.id, oppskrifter.bilde_url, oppskrifter.tittel, oppskrifter.vansklighetgrad, oppskrifter.beregnet_tid, oppskrifter.kategori_id FROM oppskrifter";
             $stmt = $pdo->prepare($oppskriftQuery);
             $stmt->execute();
             $oppskrifter = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            //skjekker om det er oppskrifter og skriver ut resultatet med bilde osv
             if (empty($oppskrifter)) {
                 echo "<p>Fant ikke noen oppskrifter</p>";
             } else {
@@ -126,7 +131,7 @@ session_start();
             ?>
         </div>
     </div>
-    
+
     <script src="js/script.js"></script>
 
 </body>

@@ -1,8 +1,9 @@
 <?php 
-
+// lager database forbinelsen
 $dsn = "mysql:host=localhost;dbname=kokekompis";
 $dbusername = "root";
 $dbpassword = "";
+
 
 try {
     $pdo = new PDO($dsn, $dbusername, $dbpassword);

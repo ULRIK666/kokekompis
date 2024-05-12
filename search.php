@@ -1,14 +1,16 @@
 <?php
 require_once "includes/dbh.inc.php";
 
+// henter søket som er skrevet in 
 if (isset($_GET['q'])) {
     $searchText = $_GET['q'];
 
-
+    // queryen henter oppskrifter som har tittel som inneholder søket som er skrevet inn 
     $searchQuery = "SELECT * FROM oppskrifter WHERE tittel LIKE ?";
     $stmt = $pdo->prepare($searchQuery);
-    $stmt->execute(["%$searchText%"]); // Endret her for å bruke søketeksten direkte
+    $stmt->execute(["%$searchText%"]); // bruker søketeksten direkte
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
     if (empty($result)) {
         echo "<div class='search-suggestion-item'>Ingen forslag funnet</div>";
@@ -20,6 +22,7 @@ if (isset($_GET['q'])) {
             $beregnet_tid = $oppskrift['beregnet_tid'];
             $id = $oppskrift['id'];
 
+            // skriver ut det som skal komme ut under søke feltet 
             echo "<a href='oppskrift_side.php?id=$id' class='search-suggestion-item'>";
             echo "<img class='suggestion_img_maxwidth' src='images/food_images/$bilde_url' alt='$bilde_tittel'>";
             echo $bilde_tittel; // Viser søkeforslagene"
@@ -33,24 +36,5 @@ if (isset($_GET['q'])) {
         }
 
     }
-
-/*
-    // SQL-spørring for å hente søkeforslag basert på det brukeren har skrevet inn
-    $searchQuery = "SELECT tittel FROM oppskrifter WHERE tittel LIKE ? LIMIT 5";
-    $stmt = $pdo->prepare($searchQuery);
-     
-     
-     
-
-
-     
-     
-     
-     
-     
-    $stmt->execute(["%$searchText%"]);
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-*/
-
 }
 ?>

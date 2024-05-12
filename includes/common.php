@@ -1,11 +1,11 @@
 <?php
-
+// denne siden henter brukerinfo, siden det er felere sider som trenger bruker info
 
 function getbrukerinfo($id)
 {
     try {
         require "dbh.inc.php";
-        // Forbered og utfør spørringen
+        // queryen henter infoen om brukeren
         $query = "SELECT brukere.brukernavn, brukere.navn, roller.rolle 
               FROM brukere 
               INNER JOIN roller ON brukere.rolle_id = roller.id 
@@ -17,10 +17,8 @@ function getbrukerinfo($id)
 
         if (empty($result)) {
             return (null);
-            //$_SESSION['error_message'] = "Ukjent brukernavn eller passord!";
-            //header("location: ../log_inn.php");
-            //exit();
         } else {
+            // lager en asociative array som lagrer rolle og navnet til brukeren
             $brukerinfo = array("brukernavn" => $result["brukernavn"], 
             "rolle" => $result["rolle"],
             "navn" => $result["navn"]);

@@ -1,6 +1,6 @@
 <?php 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // henter infylt brukernavn og passord
+    // henter det som er fylt ut i formen 
     $navn = $_POST["navn"];
     $brukernavn = $_POST["brukernavn"];
     $passord = $_POST["passord"];
@@ -14,12 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         require_once "dbh.inc.php";
 
-        // skriver in brukernavn og passord in i databasen 
+        // skriver in info om den nye brukeren i tabellen brukere 
         $query = "INSERT INTO brukere (navn, brukernavn, passord, epost, telefon, adresse, postnummer, poststed, rolle_id) 
-                  VALUES (:navn, :brukernavn, :passord, :epost , :telefon, :adresse, :postnummer, :poststed, 1);";
+                  VALUES (:navn, :brukernavn, :passord, :epost , :telefon, :adresse, :postnummer, :poststed, 1);"; // setter rolle id til 1 som er kunde 
 
         $stmt = $pdo->prepare($query);
 
+        // bindparam for inserten 
         $stmt->bindParam(":navn", $navn);
         $stmt->bindParam(":brukernavn", $brukernavn);
         $stmt->bindParam(":passord", $passord);
@@ -31,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt->execute();
 
-        //$pdo = null;
         $stmt = null;
 
         // sender deg tilbake osv

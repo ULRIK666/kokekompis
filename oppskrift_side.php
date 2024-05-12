@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<header>
+    <header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -50,12 +50,13 @@
         session_start();
 
         require "includes/dbh.inc.php";
-        $bruker_id = $_SESSION['bruker_id']; 
+        $bruker_id = $_SESSION['bruker_id'];
 
-        // Sjekk om id er sendt med i URLen
+        // sjekk om id er sendt med i urlen
         if ($_GET['id']) {
-            // Hent id fra URLen og beskytt mot SQL-injeksjon
+            // henter id fra url 
             $id = $_GET['id'];
+            //sql queyen henter sumen av rating for oppskrift + hvor mange det er
             $averageQuery = "SELECT SUM(rating) AS sum, COUNT(rating) AS count FROM rating WHERE oppskrift_id = :id";
             $stmt = $pdo->prepare($averageQuery);
             $stmt->bindParam(':id', $id);
@@ -63,6 +64,7 @@
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $firstrow = $result[0];
 
+            //regner ut gjennomsnittet av ratingene som er lagt in på oppskriften 
             $sum = $firstrow['sum'];
             $count = $firstrow['count'];
             if ($count == 0) {
@@ -72,7 +74,7 @@
             }
 
 
-            // Forbered og utfør spørringen med parameteren
+            // henter data for oppskriften 
             $oppskriftQuery = "SELECT * FROM oppskrifter WHERE id = :id";
             $stmt = $pdo->prepare($oppskriftQuery);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -85,6 +87,7 @@
             } else {
                 // Loop gjennom resultatene (selv om det bare er én, siden id er unik)
                 foreach ($result as $oppskrift) {
+                    //definerer forskjellig informasjon om oppskriften 
                     $bilde_url = $oppskrift['bilde_url'];
                     $bilde_tittel = $oppskrift['tittel'];
                     $vansklighetgrad = $oppskrift['vansklighetgrad'];
@@ -92,10 +95,7 @@
                     $oppskrift_id = $oppskrift['id'];
                     $fremgangsmåte = $oppskrift['fremgangsmåte'];
 
-                    
-
-                        
-                    // Utskrift av oppskriftdetaljer
+                    // skriver ut bilde og innhold om oppskriften på siden
                     echo "<div class='oppskrift'>";
                     echo "    <img class='maxwidth' src='images/food_images/$bilde_url' alt='mat bilde'>\n";
                     echo "</div>";
@@ -103,6 +103,7 @@
                     echo "<div class='space_between'>\n";
                     echo "<div class='ingredienser'>";
                     echo "<h3>Ingredienser:<h3>";
+                    //kjører functionen som skriver ut ingrediensene 
                     echo visingredienser($oppskrift_id);
                     echo "<h3>Fremgangsmåte:<h3>";
                     echo $fremgangsmåte;
@@ -112,19 +113,14 @@
                     echo "<div class='oppskrift_info'>Nivå: $vansklighetgrad</div>\n";
                     echo "<div class='oppskrift_info'>Tid: $beregnet_tid</div>";
                     echo "<div class='oppskrift_info'>Rating:$average</div>\n";
-
                     echo "</div>";
-                    //ny linje
-
                     echo "</div>";
                     echo "<div>\n";
-                    echo "<a href='legg_i_handlekurv.php?id=<?= $id ?>' class='button'>Legg til oppskrift i handlekurv</a>
-
-
-                    ";
+                    echo "<a href='legg_i_handlekurv.php?id=<?= $id ?>' class='button'>Legg til oppskrift i handlekurv</a>";
                     echo "</div>\n";
                     echo "trykk på stjernene for å gi rating <br>";
 
+                    // henter ratingen til brukeren som er logget in 
                     $ratingQuery = "SELECT rating FROM rating WHERE bruker_id = :bruker_id AND oppskrift_id = :id";
                     $stmt = $pdo->prepare($ratingQuery);
                     $stmt->bindParam(':bruker_id', $bruker_id);
@@ -134,11 +130,15 @@
                     if (empty($result)) {
                         $stars = 0;
                     } else {
-                    $firstrow = $result[0];
-                    $stars = $firstrow["rating"];
+                        $firstrow = $result[0];
+                        $stars = $firstrow["rating"];
                     }
 
-                    for ($i=1; $i <= 5; $i++) {
+                    // skriver ut ratingen med stjerner og tallet til brukeren
+                    echo "<div class='rating-box'>";
+                    echo "<div class='rating-container'>";
+                    echo "<div class='rating-stars'>";
+                    for ($i = 1; $i <= 5; $i++) {
                         if ($i > $stars) {
                             $bilde = "off_star.png";
                         } else {
@@ -146,47 +146,38 @@
                         }
                         echo "<a href='legg_til_vurdering.php?oppskrift_id=$id&bruker_id=$bruker_id&rating=$i'><img width='40px' src='images/$bilde' alt='*'></a>";
                     }
-                    echo "$stars";
+                    echo "</div>";
+                    echo "<div class='rating-number'>$stars</div>";
+                    echo "</div>";
+                    echo "</div>";
 
-
-                    echo "<div class='rating-container'>";
-                    echo "<a href='legg_til_vurdering.php?oppskrift_id=<?= $id ?>' class='button'>Legg til vurdering</a>";
-
-                    echo "<div class='rating-stars'>
-                    <input type='radio' name='rating' id='rs0' checked><label for='rs0'></label>
-                    <input type='radio' name='rating' id='rs1'><label for='rs1'></label>
-                    <input type='radio' name='rating' id='rs2'><label for='rs2'></label>
-                    <input type='radio' name='rating' id='rs3'><label for='rs3'></label>
-                    <input type='radio' name='rating' id='rs4'><label for='rs4'></label>
-                    <input type='radio' name='rating' id='rs5'><label for='rs5'></label>
-                    <span class='rating-counter'></span>
-                </div>";
-                echo "</div>";
                 }
             }
         } else {
-            // Hvis id ikke er sendt med i URLen, gi en feilmelding
+            // hvis id ikke er sendt med i url gi en feilmelding
             echo "<p>Mangler oppskrifts-ID i URLen</p>";
         }
 
-        function visingredienser($oppskrift_id) {
+        // function som henter ingrediensene i databasen
+        function visingredienser($oppskrift_id)
+        {
             require "includes/dbh.inc.php";
 
             $resultat = "";
 
-             // Forbered og utfør spørringen med parameteren
-             $ingrediensQuery = "SELECT * FROM ingrediens_mengde INNER JOIN ingredienser ON ingrediens_mengde.ingrediens_id = ingredienser.id where ingrediens_mengde.oppskrift_id = :ingid";
-             $stmt = $pdo->prepare($ingrediensQuery);
-             $stmt->bindParam(':ingid', $oppskrift_id, PDO::PARAM_INT);
-             $stmt->execute();
-             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
- 
-             // Sjekk om resultatet er tomt eller ikke
-             if (empty($result)) {
-                 return "<p>Fant ingen ingredienser for id: $oppskrift_id</p>";
-             } else {
-                 // Loop gjennom resultatene (selv om det bare er én, siden id er unik)
-                 foreach ($result as $ingrediens) {
+            // queryen henter ingrediensene i databasen 
+            $ingrediensQuery = "SELECT * FROM ingrediens_mengde INNER JOIN ingredienser ON ingrediens_mengde.ingrediens_id = ingredienser.id where ingrediens_mengde.oppskrift_id = :ingid";
+            $stmt = $pdo->prepare($ingrediensQuery);
+            $stmt->bindParam(':ingid', $oppskrift_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // sjekker om resultatet er tomt eller ikke
+            if (empty($result)) {
+                return "<p>Fant ingen ingredienser for id: $oppskrift_id</p>";
+            } else {
+                // loop gjennom resultatene (selv om det bare er en, siden id er unik)
+                foreach ($result as $ingrediens) {
                     $mengde = $ingrediens['mengde'];
                     $enhet = $ingrediens['enhet'];
                     $ingrediensnavn = $ingrediens['ingrediens'];

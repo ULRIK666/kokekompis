@@ -34,21 +34,24 @@
                 <?php
                 require_once "includes/dbh.inc.php";
                 session_start();
+
+                //henter bruker_id for å sjekke om man er logget inn
                 $kunde_id = $_SESSION['bruker_id'];
                 if ($kunde_id == 0) {
                     echo "Du må være logget inn for å bestille. <br>Trykk på login-knappen øverst til høyre\n";
                     return;
                 }
 
+                //sql query for å hente oppskrifter i bestilling 
                 $query = "SELECT oppskrift_i_bestilling.oppskrift_id 
                 FROM oppskrift_i_bestilling 
                 INNER JOIN bestilling ON oppskrift_i_bestilling.bestilling_id = bestilling.bestilling_id
                 WHERE bestilling.bruker_id = :bruker_id";
-      $stmt = $pdo->prepare($query);
-      $stmt->bindParam(":bruker_id", $bruker_id);
-      $stmt->execute();
-      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      
+                $stmt = $pdo->prepare($query);
+                $stmt->bindParam(":bruker_id", $bruker_id);
+                $stmt->execute();
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
                 if (empty($result)) {
                     echo "<p>Ingen produkter i handlekurven</p>";

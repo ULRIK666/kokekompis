@@ -37,19 +37,17 @@
 
             <div class="faq-content">
                 <?php
-                // Include database connection
                 include 'includes/dbh.inc.php';
 
-                // Query to fetch questions from database
                 $query = "SELECT spørsmål_tittel, spørsmål_svar FROM faq";
                 $stmt = $pdo->prepare($query);
                 $stmt->execute();
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 if ($result !== false && $stmt->rowCount() > 0) {
-                    // Output data of each row
+                    //henter data for hver av radene 
                     foreach ($result as $row) {
-                        // Bruk spørsmålets tittel som id
+
                         $id = strtolower(str_replace(' ', '_', $row["spørsmål_tittel"]));
 
                         echo '<div class="faq-question">';
@@ -60,7 +58,7 @@
                         echo '</div>';
                     }
                 } else {
-                    echo "No questions found in the FAQ.";
+                    echo "ingen spørsmål funnet i faq";
                 }
                 ?>
             </div>

@@ -349,146 +349,25 @@ input[type=submit]:hover {
 
 /* star rating system css */
 
-/* https://codepen.io/josetxu/pen/jOYYmVZ hentet herfra 
-https://freefrontend.com/css-star-ratings/  */
-body * {
-    box-sizing: border-box;
+.rating-box {
+    display: inline-block;
 }
-/* Legg til en unik klasse til rating-containeren */
+
 .rating-container {
-    margin: 20px;
-    margin-top: 50%;
+    display: flex;
+    align-items: center;
+    background-color: #f8f8f8; 
+    border: 1px solid #ddd; 
+    padding: 5px;
+    border-radius: 5px; 
 }
 
-.rating-container .rating-stars {
-    display: block;
-    width: 50vmin;
-    padding: 1.75vmin 10vmin 2vmin 3vmin;
-    background: linear-gradient(90deg, #ffffff90 40vmin, #fff0 40vmin 100%);
-    border-radius: 5vmin;
-    position: absolute;
+.rating-stars img {
+    margin-right: 5px; 
 }
 
-.rating-container .rating-counter {
-    font-size: 5.5vmin;
-    font-family: Arial, Helvetica, serif;
-    color: #9aacc6;
-    width: 10vmin;
-    text-align: center;
-    background: #0006;
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    border-radius: 0 5vmin 5vmin 0;
-    line-height: 10vmin;
-}
-
-.rating-container .rating-counter:before {
-    content: "0";
-    transition: all 0.25s ease 0s;
-}
-
-.rating-container input {
-    display: none;
-}
-
-.rating-container label {
-    width: 5vmin;
-    height: 5vmin;
-    background: #000b;
-    display: inline-flex;
-    cursor: pointer;
-    margin: 0.5vmin 0.65vmin;
-    transition: all 1s ease 0s;
-    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
-}
-
-.rating-container label[for=rs0] {
-    display: none;
-}
-
-.rating-container label:before {
-    width: 90%;
-    height: 90%;
-    content: "";
-    background: orange;
-    z-index: -1;
-    display: block;
-    margin-left: 5%;
-    margin-top: 5%;
-    clip-path: polygon(50% 0%, 66% 32%, 100% 38%, 78% 64%, 83% 100%, 50% 83%, 17% 100%, 22% 64%, 0 38%, 34% 32%);
-    background: linear-gradient(90deg, yellow, orange 30% 50%, #184580 50%, 70%, #173a75 100%);
-    background-size: 205% 100%;
-    background-position: 0 0;
-}
-
-.rating-container label:hover:before {
-    transition: all 0.25s ease 0s;
-}
-
-.rating-container input:checked+label~label:before {
-    background-position: 100% 0;
-    transition: all 0.25s ease 0s;
-}
-
-.rating-container input:checked+label~label:hover:before {
-    background-position: 0% 0
-}
-
-.rating-container #rs1:checked~.rating-counter:before {
-    content: "1";
-}
-
-.rating-container #rs2:checked~.rating-counter:before {
-    content: "2";
-}
-
-.rating-container #rs3:checked~.rating-counter:before {
-    content: "3";
-}
-
-.rating-container #rs4:checked~.rating-counter:before {
-    content: "4";
-}
-
-.rating-container #rs5:checked~.rating-counter:before {
-    content: "5";
-}
-
-.rating-container label+input:checked~.rating-counter:before {
-    color: #ffab00 !important;
-    transition: all 0.25s ease 0s;
-}
-
-.rating-container label:hover~.rating-counter:before {
-    color: #9aacc6 !important;
-    transition: all 0.5s ease 0s;
-    animation: pulse 1s ease 0s infinite;
-}
-
-
-.rating-container label[for=rs1]:hover~.rating-counter:before {
-    content: "1" !important;
-}
-
-.rating-container label[for=rs2]:hover~.rating-counter:before {
-    content: "2" !important;
-}
-
-.rating-container label[for=rs3]:hover~.rating-counter:before {
-    content: "3" !important;
-}
-
-.rating-container label[for=rs4]:hover~.rating-counter:before {
-    content: "4" !important;
-}
-
-.rating-container label[for=rs5]:hover~.rating-counter:before {
-    content: "5" !important;
-}
-
-.rating-container input:checked:hover~.rating-counter:before {
-    animation: none !important;
-    color: #ffee00 !important;
+.rating-number {
+    margin-left: auto; 
+    margin: 10px;
+    font-size: 30px; 
 }

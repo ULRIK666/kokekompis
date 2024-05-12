@@ -1,9 +1,9 @@
 <?php
-    require_once "includes/dbh.inc.php";
+require_once "includes/dbh.inc.php";
 
 session_start();
 
-// Sjekk om brukeren er logget inn
+// sjekker om brukeren er logget inn
 if (!isset($_SESSION['bruker_id']) || $_SESSION['bruker_id'] == 0) {
     echo "Du må være logget inn for å legge til oppskrifter i handlekurven.";
     exit; // Avslutt skriptet hvis brukeren ikke er logget inn
@@ -11,11 +11,9 @@ if (!isset($_SESSION['bruker_id']) || $_SESSION['bruker_id'] == 0) {
 
 
 if ($_GET['id']) {
-    // Hent id fra URLen og beskytt mot SQL-injeksjon
+    // henter id fra url-en
     $id = $_GET['id'];
     echo $id;
-    // Forbered og utfør spørringen med parameteren
-
     try {
         // Hent oppskriftens pris
 // Hent oppskriftens pris
@@ -23,7 +21,7 @@ if ($_GET['id']) {
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);        
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
             echo "Fant ikke oppskrift med ID $id.";

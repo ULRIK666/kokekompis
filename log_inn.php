@@ -41,7 +41,9 @@
                 <h3>Login</h3>
                 <?php
                 session_start();
-                if (isset ($_SESSION['error_message'])) {
+
+                //henter error meldingen
+                if (isset($_SESSION['error_message'])) {
                     echo '<p class="error-message">' . $_SESSION['error_message'] . '</p>';
                     unset($_SESSION['error_message']);
                 }

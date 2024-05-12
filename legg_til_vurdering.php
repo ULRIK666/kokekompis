@@ -1,24 +1,24 @@
 <?php
 require_once "includes/dbh.inc.php";
 session_start();
+
 $bruker_id = $_SESSION['bruker_id'];
 
+//kjekker om man er logget in
 if (!isset($bruker_id)) {
     echo "du må være logget inn for å gi en rating";
     exit();
 }
 
-
-
-// Sjekk om oppskrifts-ID er sendt via URL-parameteren
+// sjekker om oppskrifts-id er sendt i urlen
 if (isset($_GET['oppskrift_id'])) {
     $oppskrift_id = $_GET['oppskrift_id'];
 
-    // Sjekk om vurderingen er sendt via POST
+    //henter ratingen som er sendt i url
     $rating = $_GET["rating"];
-    // Hent brukerens ID fra sessionsvariabelen
 
     try {
+        //sletter vurderingen som ligger i rating enten den er der eller ikke 
         $query = "DELETE FROM rating WHERE bruker_id = :bruker_id AND oppskrift_id = :oppskrift_id";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(":oppskrift_id", $oppskrift_id);
@@ -28,24 +28,22 @@ if (isset($_GET['oppskrift_id'])) {
         echo "trengte ikke slette noe før inserten";
     }
 
-    // Sett inn vurderingen i databasen sammen med brukerens ID og oppskrifts-ID
+    // setter inn vurderingen i databasen
     $query = "INSERT INTO rating (oppskrift_id, bruker_id, rating) VALUES (:oppskrift_id, :bruker_id, :rating)";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":oppskrift_id", $oppskrift_id);
     $stmt->bindParam(":rating", $rating);
     $stmt->bindParam(":bruker_id", $bruker_id);
 
-    // Utfør spørringen og sjekk om det var noen feil
+
+    //sender deg tilbake igjen
     if ($stmt->execute()) {
         header("location: oppskrift_side.php?id=$oppskrift_id");
-        } else {
+    } else {
         echo "Det oppstod en feil ved å legge til vurderingen i databasen.";
         echo "Feilmelding: " . $stmt->errorInfo()[2];
     }
 
-    // Omdiriger brukeren tilbake til oppskriftssiden etter å ha lagt til vurderingen
-    //header("Location: oppskrift_side.php?id=$oppskrift_id");
-    //exit;
 } else {
     echo "Oppskrifts-ID ble ikke sendt via URL-parameteren.";
 }

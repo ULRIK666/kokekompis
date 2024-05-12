@@ -40,8 +40,9 @@
 
                 <h3>Signup</h3>
 
+                <!-- form for å legge registrere bruker som sedes til signuphandler -->
                 <form action="includes/signuphandler.inc.php" method="post">
-                <input class="input_width" type="text" name="navn" placeholder="Navn" required>
+                    <input class="input_width" type="text" name="navn" placeholder="Navn" required>
                     <input class="input_width" type="text" name="brukernavn" placeholder="Username" required>
                     <input class="input_width" type="password" name="passord" placeholder="Password" requierd>
                     <input class="input_width" type="text" name="epost" placeholder="Epost" required>
