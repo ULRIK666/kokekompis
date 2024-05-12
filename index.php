@@ -32,8 +32,6 @@ session_start();
             <div class="search_and_suggestions">
                 <div class="søke_input">
                     <div class="space_between">
-                        <button id="searchButton"><img class="img-icon" src="images/icon-img/search_icon.png"
-                                alt="søke ikon"></button>
                         <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
                         <div id="searchSuggestions" class="search-suggestions"></div> <!-- Ny div for søkeforslag -->
                     </div>
@@ -41,6 +39,7 @@ session_start();
                 <div class="suggestions">
                 </div>
             </div>
+
 
             <div>
                 <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png"
@@ -57,7 +56,7 @@ session_start();
                         require_once "includes/common.php";
                         $info = getbrukerinfo($id);
 
-                        echo "<span>Logget inn som: <br> $info[navn]  </span>";
+                        echo "<span>Logget inn som: <br> $info[navn] <br> som: $info[rolle]</span>";
                     } else {
                         echo "Du er ikke logget inn";
                     }

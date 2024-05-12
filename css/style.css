@@ -18,19 +18,13 @@ header {
 }
 
 .logo {
-    width: 200px;
+    width: 150px;
     margin-left: 20px;
 }
 
 .space_between {
     display: flex;
     justify-content: space-between;
-}
-
-.søke_input {
-    margin-right: 20px;
-    padding: 3px;
-
 }
 
 /* menu drop down */
@@ -77,7 +71,7 @@ header {
 .oppskrift_kategorier {
     display: flex;
     justify-content: space-between;
-    font-weight: bold;
+    flex-wrap: wrap; /* Tillat at kategoriene bryter over til ny linje */
     font-size: 20px;
 }
 
@@ -99,8 +93,9 @@ header {
 /* plassering av oppskriftene */
 .product-container {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: space-between;
+    justify-content: center; /* Sentrer oppskriftene */
     margin: 10%;
     margin-top: 30px;
 }
@@ -108,7 +103,7 @@ header {
 
 /* lger oppskrift boksen */
 .recipie {
-    width: 100%;
+    width: 175px;
     padding: 10px;
     margin: 20px;
     border: 3px solid #aa7c19;
@@ -119,15 +114,17 @@ header {
 
 /* lager bilde boxen */
 .img-box {
-    width: 60%;
+    width: 80%;
     height: auto;
 }
 
 /* setter avstand og størrelse på teksten */
 .oppskrift_info {
-    margin-top: 5px;
-    font-weight: bold;
+    font-weight: normal;
+    font-size: 18px; 
 }
+
+
 
 /* setter maks størrelsen på bildet */
 img.maxwidth {
@@ -192,11 +189,8 @@ input[type=submit]:hover {
 
 /* oppskrift side */
 .oppskrift {
-    width: 450px;
-    height: 450px;
+    width: 40%;
     margin: 20px;
-    margin-left: 150px;
-    margin-right: 150px;
     padding: 10px;
     background-color: rgb(234, 186, 118);
     border: 3px solid #aa7c19;
@@ -217,14 +211,15 @@ input[type=submit]:hover {
 }
 
 .search_and_suggestions {
-    width: 250px;
+    width: 210px;
+    margin-right: 10px;
 }
 
 .suggestions {
     display: grid;
     position: absolute;
     word-wrap: normal;
-    width: 250px;
+    width: 210px;
     background-color: #e5bfa1;
     border: 1px solid rgb(104, 75, 0);
 }
@@ -277,6 +272,8 @@ input[type=submit]:hover {
 .faq-question {
     padding: 20px 0;
     max-width: 800px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .panel-title {

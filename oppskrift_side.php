@@ -122,9 +122,9 @@
                     echo "<div class='ingredienser'>";
                     echo "<h3>Ingredienser:<h3>";
                     //kjører functionen som skriver ut ingrediensene 
-                    echo visingredienser($oppskrift_id);
+                    echo "<div class='oppskrift_info'>" . visingredienser($oppskrift_id) . "</div>";
                     echo "<h3>Fremgangsmåte:<h3>";
-                    echo $fremgangsmåte;
+                    echo "<div class='oppskrift_info'>$fremgangsmåte</div>";
                     echo "</div>\n";
                     echo "<div class='om'>";
                     echo "<div class='bilde_tittel'>$bilde_tittel</div>";
