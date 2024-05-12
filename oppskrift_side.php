@@ -47,12 +47,30 @@
 
     <div class="space_between">
         <?php
+        session_start();
+
         require "includes/dbh.inc.php";
+        $bruker_id = $_SESSION['bruker_id']; 
 
         // Sjekk om id er sendt med i URLen
         if ($_GET['id']) {
             // Hent id fra URLen og beskytt mot SQL-injeksjon
             $id = $_GET['id'];
+            $averageQuery = "SELECT SUM(rating) AS sum, COUNT(rating) AS count FROM rating WHERE oppskrift_id = :id";
+            $stmt = $pdo->prepare($averageQuery);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $firstrow = $result[0];
+
+            $sum = $firstrow['sum'];
+            $count = $firstrow['count'];
+            if ($count == 0) {
+                $average = "Ingen annmeldelser";
+            } else {
+                $average = round($sum / $count, 1);
+            }
+
 
             // Forbered og utfør spørringen med parameteren
             $oppskriftQuery = "SELECT * FROM oppskrifter WHERE id = :id";
@@ -74,6 +92,8 @@
                     $oppskrift_id = $oppskrift['id'];
                     $fremgangsmåte = $oppskrift['fremgangsmåte'];
 
+                    
+
                         
                     // Utskrift av oppskriftdetaljer
                     echo "<div class='oppskrift'>";
@@ -91,7 +111,7 @@
                     echo "<div class='bilde_tittel'>$bilde_tittel</div>";
                     echo "<div class='oppskrift_info'>Nivå: $vansklighetgrad</div>\n";
                     echo "<div class='oppskrift_info'>Tid: $beregnet_tid</div>";
-                    echo "<div class='oppskrift_info'>Rating:</div>\n";
+                    echo "<div class='oppskrift_info'>Rating:$average</div>\n";
 
                     echo "</div>";
                     //ny linje
@@ -103,8 +123,34 @@
 
                     ";
                     echo "</div>\n";
+                    echo "trykk på stjernene for å gi rating <br>";
+
+                    $ratingQuery = "SELECT rating FROM rating WHERE bruker_id = :bruker_id AND oppskrift_id = :id";
+                    $stmt = $pdo->prepare($ratingQuery);
+                    $stmt->bindParam(':bruker_id', $bruker_id);
+                    $stmt->bindParam(':id', $id);
+                    $stmt->execute();
+                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    if (empty($result)) {
+                        $stars = 0;
+                    } else {
+                    $firstrow = $result[0];
+                    $stars = $firstrow["rating"];
+                    }
+
+                    for ($i=1; $i <= 5; $i++) {
+                        if ($i > $stars) {
+                            $bilde = "off_star.png";
+                        } else {
+                            $bilde = "star.png";
+                        }
+                        echo "<a href='legg_til_vurdering.php?oppskrift_id=$id&bruker_id=$bruker_id&rating=$i'><img width='40px' src='images/$bilde' alt='*'></a>";
+                    }
+                    echo "$stars";
+
+
                     echo "<div class='rating-container'>";
-                    echo "<a href='legg_til_vurdering.php?id=<?= $id ?>' class='button'>Legg til vurdering</a>";
+                    echo "<a href='legg_til_vurdering.php?oppskrift_id=<?= $id ?>' class='button'>Legg til vurdering</a>";
 
                     echo "<div class='rating-stars'>
                     <input type='radio' name='rating' id='rs0' checked><label for='rs0'></label>
