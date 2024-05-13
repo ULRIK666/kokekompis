@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_GET['id'];
+    $id = $_POST["id"];
     $tittel = $_POST["tittel"];
     $vanskelighetsgrad = $_POST["vanskelighetsgrad"];
     $anbefalt_porsjoner = $_POST["anbefalt_porsjoner"];

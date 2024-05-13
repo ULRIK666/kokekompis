@@ -98,6 +98,7 @@
         <div class="box">
             <div class="innhold_plassering">
                 <form action="endre_oppskrift_handler.php" method="POST">
+                <input type="hidden" name="id" value="<?php echo $id ?>">
                     <input class="input_width" type="text" name="tittel" placeholder="Matrett"
                         value="<?php echo $oppskrift['tittel']; ?>" required>
                     <select name="kategori_id">
