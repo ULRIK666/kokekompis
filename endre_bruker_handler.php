@@ -20,8 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } elseif ($handling == "slett") {
 
                 $sql = "DELETE FROM brukere WHERE id = :bruker_id";
-                echo $sql;
-
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindParam(":bruker_id", $bruker_id);
             }

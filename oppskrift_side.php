@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    
-<header>
+
+    <header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -119,10 +119,20 @@
                     if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
                         echo "<a href='endre_oppskrift.php?id=$oppskrift_id' class='button'>Endre oppskrift</a>";
                     }
-                
                     echo "<h3>Ingredienser:<h3>";
                     //kjører functionen som skriver ut ingrediensene 
                     echo "<div class='oppskrift_info'>" . visingredienser($oppskrift_id) . "</div>";
+                    // todo bare la kokker legge til på egne oppskrifter 
+                    if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
+                        echo "<form action='endre_ingrediens_handler.php' method='POST'>";
+                        echo "<input type='hidden' name='oppskrift_id' value='$oppskrift_id'>";
+                        echo "<input type='hidden' name='handling' value='legg_til'>";
+                        echo "<input class='ingrediens_input' type='text' name='mengde' placeholder='mengde'>";
+                        echo "<input class='ingrediens_input' type='text' name='enhet' placeholder='enhet' requierd>";
+                        echo "<input class='ingrediens_input' type='text' name='ingrediens' placeholder='ingrediens'>";
+                        echo "<input type='submit' value='Legg til' class='button'>";
+                        echo "</form>";
+                    }
                     echo "<h3>Fremgangsmåte:<h3>";
                     echo "<div class='oppskrift_info'>$fremgangsmåte</div>";
                     echo "</div>\n";
