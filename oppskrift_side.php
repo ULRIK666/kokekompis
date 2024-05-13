@@ -117,7 +117,7 @@
                     require_once "includes/common.php";
                     $userinfo = getbrukerinfo($_SESSION['bruker_id']);
                     if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
-                        echo "<a href='endre_oppskrift.php' class='button'>Endre oppskrift</a>";
+                        echo "<a href='endre_oppskrift.php?id=$oppskrift_id' class='button'>Endre oppskrift</a>";
                     }
                 
                     echo "<h3>Ingredienser:<h3>";

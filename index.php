@@ -44,7 +44,7 @@
                         alt="profile icon"></a>
                 <div class="user-info">
                     <!-- forteller hvem som er logget in -->
-                    
+
                     <?php
                     session_start();
                     require_once "includes/dbh.inc.php";
@@ -61,16 +61,18 @@
     <div class="kategori_overskrift">
         <h1>Oppskrifter</h1>
     </div>
+    <div class="center">
 
-    <?php
-    require_once "includes/common.php";
-    $userinfo = getbrukerinfo($_SESSION['bruker_id']);
-    if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
-        echo "<a href='legg_til_oppskrift.php' class='button'>Legg til oppskrift</a>";
-    }
+        <?php
+        require_once "includes/common.php";
+        $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+        if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
+            echo "<a href='legg_til_oppskrift.php' class='button'>Legg til oppskrift</a>";
+            echo "<a href='brukere.php' class='button'>Bruker oversikt</a>";
+        }
 
-    ?>
-
+        ?>
+    </div>
 
     <div class="center">
         <div class="oppskrift_kategorier">
@@ -125,6 +127,12 @@
                     echo "<div class='price'>" . $oppskrift['beregnet_tid'] . "</div>";
                     echo "<div class='price'>" . $oppskrift['vanskelighetsgrad'] . "</div>";
                     echo "<a href='oppskrift_side.php?id=" . $oppskrift['id'] . "' class='button'>Se oppskrift</a>";
+                    require_once "includes/common.php";
+                    $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+                    if ($userinfo["rolle"] == "admin") {
+                        echo "<a href='slett_oppskrift.php?id=" . $oppskrift['id'] . "' class='slett-button'>Slett oppskrift</a>";
+                    }
+
                     echo "</div>";
                 }
             }

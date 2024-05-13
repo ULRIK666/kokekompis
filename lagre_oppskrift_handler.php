@@ -1,4 +1,4 @@
-<?php 
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // henter det som er fylt ut i formen 
     $tittel = $_POST["tittel"];
@@ -35,15 +35,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = null;
 
         // sender deg tilbake osv
-      //  header("location: ../.php");
-      echo "alt gikk bra";
-      header("location: oppskrift_side.php?id=$last_id");
+        //  header("location: ../.php");
+        echo "alt gikk bra";
+        header("location: oppskrift_side.php?id=$last_id");
 
-      
+
         exit();
     } catch (PDOException $e) {
-        die("Query failed:". $e->getMessage());
+        die("Query failed:" . $e->getMessage());
     }
 } else {
-   echo "ingen post";
+    echo "ingen post";
 }
