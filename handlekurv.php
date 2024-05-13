@@ -33,30 +33,22 @@
                 <div class="user-info">
                     <!-- forteller hvem som er logget in -->
                     <?php
-                    if (isset($_SESSION['bruker_id'])) {
-                        $id = $_SESSION['bruker_id'];
-                        require_once "includes/dbh.inc.php";
-                        require_once "includes/common.php";
-                        $info = getbrukerinfo($id);
-
-                        echo "<span>Logget inn som: <br> $info[navn]  </span>";
-                    } else {
-                        echo "Du er ikke logget inn";
-                    }
+                    session_start();
+                    require_once "includes/common.php";
+                    echo show_userinfo($_SESSION['bruker_id']);
                     ?>
                 </div>
             </div>
 
         </div>
     </header>
-    
+
     <div class="center">
         <div class="handlekurv">
             <table width='100%'>
 
                 <?php
                 require_once "includes/dbh.inc.php";
-                session_start();
 
                 //henter bruker_id for å sjekke om man er logget inn
                 $kunde_id = $_SESSION['bruker_id'];

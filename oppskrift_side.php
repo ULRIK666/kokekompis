@@ -46,16 +46,10 @@
                 <div class="user-info">
                     <!-- forteller hvem som er logget in -->
                     <?php
-                    if (isset($_SESSION['bruker_id'])) {
-                        $id = $_SESSION['bruker_id'];
-                        require_once "includes/dbh.inc.php";
-                        require_once "includes/common.php";
-                        $info = getbrukerinfo($id);
-
-                        echo "<span>Logget inn som: <br> $info[navn]  </span>";
-                    } else {
-                        echo "Du er ikke logget inn";
-                    }
+                    session_start();
+                    require_once "includes/dbh.inc.php";
+                    require_once "includes/common.php";
+                    echo show_userinfo($_SESSION['bruker_id']);
                     ?>
                 </div>
             </div>
@@ -65,7 +59,6 @@
 
     <div class="space_between">
         <?php
-        session_start();
 
         require "includes/dbh.inc.php";
         $bruker_id = $_SESSION['bruker_id'];
@@ -108,7 +101,7 @@
                     //definerer forskjellig informasjon om oppskriften 
                     $bilde_url = $oppskrift['bilde_url'];
                     $bilde_tittel = $oppskrift['tittel'];
-                    $vansklighetgrad = $oppskrift['vansklighetgrad'];
+                    $vanskelighetsgrad = $oppskrift['vanskelighetsgrad'];
                     $beregnet_tid = $oppskrift['beregnet_tid'];
                     $oppskrift_id = $oppskrift['id'];
                     $fremgangsmåte = $oppskrift['fremgangsmåte'];
@@ -120,6 +113,13 @@
                     echo "<div class='oppskrift'>";
                     echo "<div class='space_between'>\n";
                     echo "<div class='ingredienser'>";
+
+                    require_once "includes/common.php";
+                    $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+                    if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
+                        echo "<a href='endre_oppskrift.php' class='button'>Endre oppskrift</a>";
+                    }
+                
                     echo "<h3>Ingredienser:<h3>";
                     //kjører functionen som skriver ut ingrediensene 
                     echo "<div class='oppskrift_info'>" . visingredienser($oppskrift_id) . "</div>";
@@ -128,7 +128,7 @@
                     echo "</div>\n";
                     echo "<div class='om'>";
                     echo "<div class='bilde_tittel'>$bilde_tittel</div>";
-                    echo "<div class='oppskrift_info'>Nivå: $vansklighetgrad</div>\n";
+                    echo "<div class='oppskrift_info'>Nivå: $vanskelighetsgrad</div>\n";
                     echo "<div class='oppskrift_info'>Tid: $beregnet_tid</div>";
                     echo "<div class='oppskrift_info'>Rating:$average</div>\n";
                     echo "</div>";

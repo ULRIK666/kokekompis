@@ -28,4 +28,17 @@ function getbrukerinfo($id)
         return (null);
     }
 }
+
+function show_userinfo ($id) {
+
+    if (isset($id)) {
+        require_once "includes/dbh.inc.php";
+        require_once "includes/common.php";
+        $info = getbrukerinfo($id);
+
+        return "<span>Logget inn som: <br> $info[navn] <br> som: $info[rolle]</span>";
+    } else {
+        return "Du er ikke logget inn";
+    }
+}
 ?>

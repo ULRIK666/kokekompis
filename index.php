@@ -1,8 +1,3 @@
-<?php
-session_start();
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,18 +44,14 @@ session_start();
                         alt="profile icon"></a>
                 <div class="user-info">
                     <!-- forteller hvem som er logget in -->
+                    
                     <?php
-                    if (isset($_SESSION['bruker_id'])) {
-                        $id = $_SESSION['bruker_id'];
-                        require_once "includes/dbh.inc.php";
-                        require_once "includes/common.php";
-                        $info = getbrukerinfo($id);
-
-                        echo "<span>Logget inn som: <br> $info[navn] <br> som: $info[rolle]</span>";
-                    } else {
-                        echo "Du er ikke logget inn";
-                    }
+                    session_start();
+                    require_once "includes/dbh.inc.php";
+                    require_once "includes/common.php";
+                    echo show_userinfo($_SESSION['bruker_id']);
                     ?>
+
                 </div>
             </div>
 
@@ -70,6 +61,16 @@ session_start();
     <div class="kategori_overskrift">
         <h1>Oppskrifter</h1>
     </div>
+
+    <?php
+    require_once "includes/common.php";
+    $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+    if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
+        echo "<a href='legg_til_oppskrift.php' class='button'>Legg til oppskrift</a>";
+    }
+
+    ?>
+
 
     <div class="center">
         <div class="oppskrift_kategorier">
@@ -103,7 +104,7 @@ session_start();
         <div class="product-container">
             <?php
             // henter oppskrifter og infoen deres fra databasen
-            $oppskriftQuery = "SELECT oppskrifter.id, oppskrifter.bilde_url, oppskrifter.tittel, oppskrifter.vansklighetgrad, oppskrifter.beregnet_tid, oppskrifter.kategori_id FROM oppskrifter";
+            $oppskriftQuery = "SELECT oppskrifter.id, oppskrifter.bilde_url, oppskrifter.tittel, oppskrifter.vanskelighetsgrad, oppskrifter.beregnet_tid, oppskrifter.kategori_id FROM oppskrifter";
             $stmt = $pdo->prepare($oppskriftQuery);
             $stmt->execute();
             $oppskrifter = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -122,7 +123,7 @@ session_start();
                     echo "</div>";
                     echo "<div class='rating'></div>";
                     echo "<div class='price'>" . $oppskrift['beregnet_tid'] . "</div>";
-                    echo "<div class='price'>" . $oppskrift['vansklighetgrad'] . "</div>";
+                    echo "<div class='price'>" . $oppskrift['vanskelighetsgrad'] . "</div>";
                     echo "<a href='oppskrift_side.php?id=" . $oppskrift['id'] . "' class='button'>Se oppskrift</a>";
                     echo "</div>";
                 }

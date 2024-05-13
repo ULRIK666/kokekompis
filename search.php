@@ -18,7 +18,7 @@ if (isset($_GET['q'])) {
         foreach ($result as $oppskrift) {
             $bilde_url = $oppskrift['bilde_url'];
             $bilde_tittel = $oppskrift['tittel'];
-            $vansklighetgrad = $oppskrift['vansklighetgrad'];
+            $vanskelighetsgrad = $oppskrift['vanskelighetsgrad'];
             $beregnet_tid = $oppskrift['beregnet_tid'];
             $id = $oppskrift['id'];
 
@@ -28,7 +28,7 @@ if (isset($_GET['q'])) {
             echo $bilde_tittel; // Viser søkeforslagene"
             echo "<div>";
             echo "<div class='price' class='nolink'>$beregnet_tid</div>";
-            echo "<div class='price' class='nolink'>$vansklighetgrad</div>";
+            echo "<div class='price' class='nolink'>$vanskelighetsgrad</div>";
             echo "</div>";
             echo "</a>";
 
