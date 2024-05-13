@@ -121,16 +121,18 @@ if ($row['bruker_id'] != $_SESSION['bruker_id']) {
     echo "<td>";
 
             foreach ($available_roles as $role) {
-                echo "<form action='endre_rolle_handler.php' method='post' style='display: inline;'>
+                echo "<form action='endre_bruker_handler.php' method='POST' style='display: inline;'>
+                <input type='hidden' name='handling' value='endre'>
                 <input type='hidden' name='bruker_id' value='" . $row['bruker_id'] . "'>
                 <input type='hidden' name='rolle_id' value='" . $role['id'] . "'>
                 <button class='btn btn-primary' type='submit' name='rolle' value='$role[id]'>Bytt til $role[rolle]</button>
-              </form>";
+                </form>";
             }
 
             echo "</td>";
             echo "<td>
-            <form action='slett_bruker.php' method='post' style='display: inline;'>
+            <form action='endre_bruker_handler.php' method='POST' style='display: inline;'>
+            <input type='hidden' name='handling' value='slett'>
             <input type='hidden' name='bruker_id' value='" . $row['bruker_id'] . "'>
             <button class='btn btn-danger' type='submit'>Slett bruker</button>
             </form>
