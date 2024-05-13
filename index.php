@@ -68,7 +68,7 @@
         $userinfo = getbrukerinfo($_SESSION['bruker_id']);
         if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
             echo "<a href='legg_til_oppskrift.php' class='button'>Legg til oppskrift</a>";
-            echo "<a href='brukere.php' class='button'>Bruker oversikt</a>";
+            echo "<a href='brukerliste.php' class='button'>Bruker oversikt</a>";
         }
 
         ?>
