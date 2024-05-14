@@ -33,9 +33,9 @@ if ($_GET['id']) {
         $pris = $result['pris'];
 
         // Legg til oppskriften i handlekurven
-        $query = "INSERT INTO handlekurv (kunde_id, oppskrift_id, pris, antall) VALUES (:kunde_id, :oppskrift_id, :pris, 1)";
+        $query = "INSERT INTO handlekurv (bruker_id, oppskrift_id, pris_i_handlekurv) VALUES (:bruker_id, :oppskrift_id, :pris)";
         $stmt = $pdo->prepare($query);
-        $stmt->bindParam(":kunde_id", $_SESSION['id']);
+        $stmt->bindParam(":bruker_id", $_SESSION['bruker_id']);
         $stmt->bindParam(":oppskrift_id", $id);
         $stmt->bindParam(":pris", $pris);
         $stmt->execute();

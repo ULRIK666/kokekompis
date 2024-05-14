@@ -144,7 +144,7 @@
                     echo "</div>";
                     echo "</div>";
                     echo "<div>\n";
-                    echo "<a href='legg_i_handlekurv.php?id=<?= $id ?>' class='button'>Legg til oppskrift i handlekurv</a>";
+                    echo "<a href='legg_i_handlekurv.php?id=$id' class='button'>Legg til oppskrift i handlekurv</a>";
                     echo "</div>\n";
                     echo "trykk på stjernene for å gi rating <br>";
 
