@@ -100,6 +100,11 @@ header {
     margin-top: 30px;
 }
 
+.innhold_plassering {
+    width: 400px;
+    display: flex;
+    flex-wrap: wrap;
+}
 
 /* lger oppskrift boksen */
 .recipie {
@@ -165,9 +170,8 @@ img.maxwidth {
 
 /* input design */
 
-input[type=text],
-select {
-    width: 100%;
+.input_text {
+    width: 400px;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -176,7 +180,7 @@ select {
     box-sizing: border-box;
 }
 
-input[type=submit] {
+.input_submit {
     width: 100%;
     background-color: #4CAF50;
     color: white;

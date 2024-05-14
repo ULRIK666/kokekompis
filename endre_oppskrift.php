@@ -13,8 +13,7 @@
 </head>
 
 <body>
-
-    <header>
+<header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -31,7 +30,7 @@
             <div class="search_and_suggestions">
                 <div class="søke_input">
                     <div class="space_between">
-                        <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
+                        <input class="input_text" type="text" id="searchInput" placeholder="Søk etter oppskrift">
                         <div id="searchSuggestions" class="search-suggestions"></div> <!-- Ny div for søkeforslag -->
                     </div>
                 </div>
@@ -51,7 +50,7 @@
 
                     <?php
                     session_start();
-                    require "includes/dbh.inc.php";
+                    require_once "includes/dbh.inc.php";
                     require_once "includes/common.php";
                     echo show_userinfo($_SESSION['bruker_id']);
                     ?>
@@ -61,7 +60,6 @@
 
         </div>
     </header>
-
     <?php
     require "includes/dbh.inc.php";
 
@@ -98,10 +96,10 @@
         <div class="box">
             <div class="innhold_plassering">
                 <form action="endre_oppskrift_handler.php" method="POST">
-                <input type="hidden" name="id" value="<?php echo $id ?>">
-                    <input class="input_width" type="text" name="tittel" placeholder="Matrett"
+                <input class="input_text" type="hidden" name="id" value="<?php echo $id ?>">
+                    <input class="input_text"  class="input_width" type="text" name="tittel" placeholder="Matrett"
                         value="<?php echo $oppskrift['tittel']; ?>" required>
-                    <select name="kategori_id">
+                    <select class="input_text" name="kategori_id">
                         <?php
                         // Henter kategorier fra databasen
                         $kategoriQuery = "SELECT * FROM kategori";
@@ -125,7 +123,7 @@
                         echo $options;
                         ?>
                     </select>
-                    <select name="vanskelighetsgrad">
+                    <select class="input_text" name="vanskelighetsgrad">
                         <option value="lett" <?php if ($oppskrift['vanskelighetsgrad'] == "lett")
                             echo "selected"; ?>>Lett
                         </option>
@@ -134,11 +132,11 @@
                         <option value="vannsklig" <?php if ($oppskrift['vanskelighetsgrad'] == "vanskelig")
                             echo "selected"; ?>>Vanskelig</option>
                     </select>
-                    <input type="number" name="anbefalt_porsjoner" placeholder="Anbefalt porsjoner"
+                    <input class="input_text" type="number" name="anbefalt_porsjoner" placeholder="Anbefalt porsjoner"
                         value="<?php echo $oppskrift['anbefalt_porsjoner']; ?>" required>
-                    <input type="number" name="pris" placeholder="Pris" value="<?php echo $oppskrift['pris']; ?>"
+                    <input class="input_text" type="number" name="pris" placeholder="Pris" value="<?php echo $oppskrift['pris']; ?>"
                         required>
-                    <input type="text" name="beregnet_tid" placeholder="Beregnet tid"
+                    <input class="input_text" type="text" name="beregnet_tid" placeholder="Beregnet tid"
                         value="<?php echo $oppskrift['beregnet_tid']; ?>" required>
                     <textarea name="fremgangsmåte" placeholder="Fremgangsmåte" cols="50"
                         rows="5"><?php echo $oppskrift['fremgangsmåte']; ?></textarea>

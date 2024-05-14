@@ -9,8 +9,7 @@
 </head>
 
 <body>
-
-    <header>
+<header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -27,15 +26,14 @@
             <div class="search_and_suggestions">
                 <div class="søke_input">
                     <div class="space_between">
-                        <button id="searchButton"><img class="img-icon" src="images/icon-img/search_icon.png"
-                                alt="søke ikon"></button>
-                        <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
+                        <input class="input_text" type="text" id="searchInput" placeholder="Søk etter oppskrift">
                         <div id="searchSuggestions" class="search-suggestions"></div> <!-- Ny div for søkeforslag -->
                     </div>
                 </div>
                 <div class="suggestions">
                 </div>
             </div>
+
 
             <div>
                 <a href="handlekurv.php"><img class="img-icon" src="images/icon-img/handlekurv.png"
@@ -45,12 +43,14 @@
                         alt="profile icon"></a>
                 <div class="user-info">
                     <!-- forteller hvem som er logget in -->
+
                     <?php
                     session_start();
                     require_once "includes/dbh.inc.php";
                     require_once "includes/common.php";
                     echo show_userinfo($_SESSION['bruker_id']);
                     ?>
+
                 </div>
             </div>
 
@@ -127,10 +127,10 @@
                         echo "<form action='endre_ingrediens_handler.php' method='POST'>";
                         echo "<input type='hidden' name='oppskrift_id' value='$oppskrift_id'>";
                         echo "<input type='hidden' name='handling' value='legg_til'>";
-                        echo "<input class='ingrediens_input' type='text' name='mengde' placeholder='mengde'>";
-                        echo "<input class='ingrediens_input' type='text' name='enhet' placeholder='enhet' requierd>";
-                        echo "<input class='ingrediens_input' type='text' name='ingrediens' placeholder='ingrediens'>";
-                        echo "<input type='submit' value='Legg til' class='button'>";
+                        echo "<input class='input_text' class='ingrediens_input' type='text' name='mengde' placeholder='mengde'>";
+                        echo "<input class='input_text' class='ingrediens_input' type='text' name='enhet' placeholder='enhet' requierd>";
+                        echo "<input class='input_text' class='ingrediens_input' type='text' name='ingrediens' placeholder='ingrediens'>";
+                        echo "<input class='input_submit' type='submit' value='Legg til' class='button'>";
                         echo "</form>";
                     }
                     echo "<h3>Fremgangsmåte:<h3>";
@@ -219,6 +219,7 @@
 
     </div>
 
+    <script src="js/script.js"></script>
 </body>
 
 </html>

@@ -20,6 +20,6 @@
     die("Query failed:" . $e->getMessage());
 }
 } else {
-echo "ingen get";
+echo "ingen post";
 }
 ?>

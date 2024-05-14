@@ -13,8 +13,7 @@
 </head>
 
 <body>
-
-    <header>
+<header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -31,7 +30,7 @@
             <div class="search_and_suggestions">
                 <div class="søke_input">
                     <div class="space_between">
-                        <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
+                        <input class="input_text" type="text" id="searchInput" placeholder="Søk etter oppskrift">
                         <div id="searchSuggestions" class="search-suggestions"></div> <!-- Ny div for søkeforslag -->
                     </div>
                 </div>
@@ -51,7 +50,7 @@
 
                     <?php
                     session_start();
-                    require "includes/dbh.inc.php";
+                    require_once "includes/dbh.inc.php";
                     require_once "includes/common.php";
                     echo show_userinfo($_SESSION['bruker_id']);
                     ?>
@@ -73,8 +72,8 @@
             <div class="innhold_plassering">
 
                 <form action="lagre_oppskrift_handler.php" method="POST">
-                    <input class="input_width" type="text" name="tittel" placeholder="Matrett" requierd>
-                    <select name="kategori_id">
+                    <input class="input_text"  class="input_width" type="text" name="tittel" placeholder="Matrett" requierd>
+                    <select class="input_text" name="kategori_id">
                         <?php
                     require "includes/dbh.inc.php";
 
@@ -101,14 +100,14 @@
                         ?>
 
                     </select>
-                    <select name="vanskelighetsgrad">
+                    <select class="input_text" name="vanskelighetsgrad">
                         <option value="lett">Lett</option>
                         <option value="middels">Middels</option>
                         <option value="vannsklig">Vansklig</option>
                     </select>
-                    <input type="number" name="anbefalt_porsjoner" placeholder="Anbefalt porsjoner" requierd>
-                    <input type="number" name="pris" placeholder="Pris" requiered>
-                    <input type="number" name="beregnet_tid" placeholder="Beregnet tid" requierd>
+                    <input class="input_text" type="number" name="anbefalt_porsjoner" placeholder="Anbefalt porsjoner" requierd>
+                    <input class="input_text" type="number" name="pris" placeholder="Pris" requiered>
+                    <input class="input_text" type="number" name="beregnet_tid" placeholder="Beregnet tid" requierd>
                     <textarea name="fremgangsmåte" placeholder="Fremgangsmåte" cols="50" rows="5"></textarea>
                     <button class="button">Legg til oppskrift</button> <br>
                 </form>

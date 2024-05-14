@@ -10,7 +10,7 @@
 
 <body>
 
-    <header>
+<header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -27,7 +27,7 @@
             <div class="search_and_suggestions">
                 <div class="søke_input">
                     <div class="space_between">
-                        <input type="text" id="searchInput" placeholder="Søk etter oppskrift">
+                        <input class="input_text" type="text" id="searchInput" placeholder="Søk etter oppskrift">
                         <div id="searchSuggestions" class="search-suggestions"></div> <!-- Ny div for søkeforslag -->
                     </div>
                 </div>
@@ -141,7 +141,6 @@
     </div>
 
     <script src="js/script.js"></script>
-
 </body>
 
 </html>
