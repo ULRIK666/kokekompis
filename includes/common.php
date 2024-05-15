@@ -35,7 +35,9 @@ function show_userinfo ($id) {
         require_once "includes/dbh.inc.php";
         require_once "includes/common.php";
         $info = getbrukerinfo($id);
-
+if ($info == null) {
+    return("bruker_id $id finnes ikke");
+    }
         return "<span>Logget inn som: <br> $info[navn] <br> som: $info[rolle]</span>";
     } else {
         return "Du er ikke logget inn";

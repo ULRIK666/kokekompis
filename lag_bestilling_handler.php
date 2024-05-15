@@ -44,7 +44,6 @@
     </header>
 
     <div class="center">
-        <h1>Kvittering:</h1>
         <div class="handlekurv">
             <table width='100%'>
 

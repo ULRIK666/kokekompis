@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<header>
+    <header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -48,7 +48,9 @@
                     session_start();
                     require_once "includes/dbh.inc.php";
                     require_once "includes/common.php";
-                    echo show_userinfo($_SESSION['bruker_id']);
+                    if (isset($_SESSION['bruker_id'])) {
+                        echo show_userinfo($_SESSION['bruker_id']);
+                    }
                     ?>
 
                 </div>
@@ -61,8 +63,9 @@
         <?php
 
         require "includes/dbh.inc.php";
-        $bruker_id = $_SESSION['bruker_id'];
-
+        if (isset($_SESSION['bruker_id'])) {
+            $bruker_id = $_SESSION['bruker_id'];
+        }
         // sjekk om id er sendt med i urlen
         if ($_GET['id']) {
             // henter id fra url 
@@ -105,6 +108,7 @@
                     $beregnet_tid = $oppskrift['beregnet_tid'];
                     $oppskrift_id = $oppskrift['id'];
                     $fremgangsmåte = $oppskrift['fremgangsmåte'];
+                    $pris = $oppskrift['pris'];
 
                     // skriver ut bilde og innhold om oppskriften på siden
                     echo "<div class='oppskrift'>";
@@ -115,23 +119,29 @@
                     echo "<div class='ingredienser'>";
 
                     require_once "includes/common.php";
-                    $userinfo = getbrukerinfo($_SESSION['bruker_id']);
-                    if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
-                        echo "<a href='endre_oppskrift.php?id=$oppskrift_id' class='button'>Endre oppskrift</a>";
+                    if (isset($_SESSION['bruker_id'])) {
+                        $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+                        if ($userinfo != null) {
+                            if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
+                                echo "<a href='endre_oppskrift.php?id=$oppskrift_id' class='button'>Endre oppskrift</a>";
+                            }
+                        }
                     }
                     echo "<h3>Ingredienser:<h3>";
                     //kjører functionen som skriver ut ingrediensene 
                     echo "<div class='oppskrift_info'>" . visingredienser($oppskrift_id) . "</div>";
                     // todo bare la kokker legge til på egne oppskrifter 
-                    if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
-                        echo "<form action='endre_ingrediens_handler.php' method='POST'>";
-                        echo "<input type='hidden' name='oppskrift_id' value='$oppskrift_id'>";
-                        echo "<input type='hidden' name='handling' value='legg_til'>";
-                        echo "<input class='input_text' class='ingrediens_input' type='text' name='mengde' placeholder='mengde'>";
-                        echo "<input class='input_text' class='ingrediens_input' type='text' name='enhet' placeholder='enhet' requierd>";
-                        echo "<input class='input_text' class='ingrediens_input' type='text' name='ingrediens' placeholder='ingrediens'>";
-                        echo "<input class='input_submit' type='submit' value='Legg til' class='button'>";
-                        echo "</form>";
+                    if (isset($userinfo) && $userinfo != null) {
+                        if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
+                            echo "<form action='endre_ingrediens_handler.php' method='POST'>";
+                            echo "<input type='hidden' name='oppskrift_id' value='$oppskrift_id'>";
+                            echo "<input type='hidden' name='handling' value='legg_til'>";
+                            echo "<input class='input_text' class='ingrediens_input' type='text' name='mengde' placeholder='mengde'>";
+                            echo "<input class='input_text' class='ingrediens_input' type='text' name='enhet' placeholder='enhet'>";
+                            echo "<input class='input_text' class='ingrediens_input' type='text' name='ingrediens' placeholder='ingrediens' required>";
+                            echo "<input class='input_submit' type='submit' value='Legg til' class='button'>";
+                            echo "</form>";
+                        }
                     }
                     echo "<h3>Fremgangsmåte:<h3>";
                     echo "<div class='oppskrift_info'>$fremgangsmåte</div>";
@@ -140,6 +150,7 @@
                     echo "<div class='bilde_tittel'>$bilde_tittel</div>";
                     echo "<div class='oppskrift_info'>Nivå: $vanskelighetsgrad</div>\n";
                     echo "<div class='oppskrift_info'>Tid: $beregnet_tid</div>";
+                    echo "<div class='oppskrift_info'>Pris: $pris kr</div>";
                     echo "<div class='oppskrift_info'>Rating:$average</div>\n";
                     echo "</div>";
                     echo "</div>";
@@ -194,7 +205,7 @@
             $resultat = "";
 
             // queryen henter ingrediensene i databasen 
-            $ingrediensQuery = "SELECT * FROM ingrediens_mengde INNER JOIN ingredienser ON ingrediens_mengde.ingrediens_id = ingredienser.id where ingrediens_mengde.oppskrift_id = :ingid";
+            $ingrediensQuery = "SELECT ingrediens_mengde.mengde, ingrediens_mengde.enhet AS enhet, ingrediens_mengde.id AS id, ingredienser.ingrediens FROM ingrediens_mengde INNER JOIN ingredienser ON ingrediens_mengde.ingrediens_id = ingredienser.id where ingrediens_mengde.oppskrift_id = :ingid";
             $stmt = $pdo->prepare($ingrediensQuery);
             $stmt->bindParam(':ingid', $oppskrift_id, PDO::PARAM_INT);
             $stmt->execute();
@@ -202,17 +213,29 @@
 
             // sjekker om resultatet er tomt eller ikke
             if (empty($result)) {
-                return "<p>Fant ingen ingredienser for id: $oppskrift_id</p>";
+                $resultat = "<p>Fant ingen ingredienser for id: $oppskrift_id</p>";
             } else {
-                // loop gjennom resultatene (selv om det bare er en, siden id er unik)
+                $resultat = ''; // Initialiser resultatstrengen
                 foreach ($result as $ingrediens) {
-                    $mengde = $ingrediens['mengde'];
+                    $mengde = ($ingrediens['mengde'] == 0) ? "" : $ingrediens['mengde'];
                     $enhet = $ingrediens['enhet'];
                     $ingrediensnavn = $ingrediens['ingrediens'];
-                    $resultat .= "$mengde $enhet $ingrediensnavn<br>\n";
+
+                    // Sjekk brukerens rolle for å avgjøre om Slett-lenken skal inkluderes
+                    $slett = '';
+                    if (isset($_SESSION['bruker_id'])) {
+                        $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+                        if ($userinfo != null && ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin")) {
+                            $slett = "<a href='endre_ingrediens_handler.php?id={$ingrediens['id']}&handling=slett&oppskrift_id=$oppskrift_id' class='slett-ingrediens'>Slett</a>";
+                        }
+                    }
+
+                    // Legg til ingrediens og eventuell slett-lenke i resultatstrengen
+                    $resultat .= "$mengde $enhet $ingrediensnavn $slett<br>\n";
                 }
             }
             return $resultat;
+
         }
         ?>
 

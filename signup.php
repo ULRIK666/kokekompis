@@ -36,8 +36,19 @@
                     session_start();
                     require_once "includes/dbh.inc.php";
                     require_once "includes/common.php";
-                    echo show_userinfo($_SESSION['bruker_id']);
+                    if (isset($_SESSION['bruker_id'])) {
+                        $bruker_id = show_userinfo($_SESSION['bruker_id']);
+                        if ($bruker_id) {
+                            echo $bruker_id;
+
+                        } else {
+                            echo "ukjent feil, fikk ikke svar fra show user info";
+                        }
+                    } else {
+                        echo "Du er ikke logget inn";
+                    }
                     ?>
+
                 </div>
             </div>
 

@@ -34,8 +34,19 @@
                     <!-- forteller hvem som er logget in -->
                     <?php
                     session_start();
+                    require_once "includes/dbh.inc.php";
                     require_once "includes/common.php";
-                    echo show_userinfo($_SESSION['bruker_id']);
+                    if (isset($_SESSION['bruker_id'])) {
+                        $bruker_id = show_userinfo($_SESSION['bruker_id']);
+                        if ($bruker_id) {
+                            echo $bruker_id;
+
+                        } else {
+                            echo "ukjent feil, fikk ikke svar fra show user info";
+                        }
+                    } else {
+                        echo "Du er ikke logget inn";
+                    }
                     ?>
                 </div>
             </div>
@@ -51,11 +62,14 @@
                 require "includes/dbh.inc.php";
 
                 //henter bruker_id for å sjekke om man er logget inn
+                if (isset($_SESSION['bruker_id'])) {
+
                 $bruker_id = $_SESSION['bruker_id'];
                 if ($bruker_id == 0) {
                     echo "Du må være logget inn for å bestille. <br>Trykk på login-knappen øverst til høyre\n";
                     return;
                 }
+            }
  
                 //sql query for å hente oppskrifter i bestilling 
                 $query = "SELECT handlekurv.pris_i_handlekurv, oppskrifter.id, oppskrifter.tittel 

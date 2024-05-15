@@ -10,7 +10,7 @@
 
 <body>
 
-<header>
+    <header>
         <div>
             <div class="menu-container">
                 <img class="img-icon menu-icon" src="images/icon-img/menu_icon.png" alt="menu icon">
@@ -49,7 +49,17 @@
                     session_start();
                     require_once "includes/dbh.inc.php";
                     require_once "includes/common.php";
-                    echo show_userinfo($_SESSION['bruker_id']);
+                    if (isset($_SESSION['bruker_id'])) {
+                        $bruker_id = show_userinfo($_SESSION['bruker_id']);
+                        if ($bruker_id) {
+                            echo $bruker_id;
+
+                        } else {
+                            echo "ukjent feil, fikk ikke svar fra show user info";
+                        }
+                    } else {
+                        echo "Du er ikke logget inn";
+                    }
                     ?>
 
                 </div>
@@ -65,10 +75,18 @@
 
         <?php
         require_once "includes/common.php";
-        $userinfo = getbrukerinfo($_SESSION['bruker_id']);
-        if ($userinfo["rolle"] == "kokk" || $userinfo["rolle"] == "admin") {
-            echo "<a href='legg_til_oppskrift.php' class='button'>Legg til oppskrift</a>";
-            echo "<a href='brukerliste.php' class='button'>Bruker oversikt</a>";
+        if (isset($_SESSION['bruker_id'])) {
+            $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+            if ($userinfo != null) {
+                if ($userinfo["rolle"] == "kokk") {
+                    echo "<a href='legg_til_oppskrift.php' class='button'>Legg til oppskrift</a>";
+                }
+                $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+                if ($userinfo["rolle"] == "admin") {
+                    echo "<a href='legg_til_oppskrift.php' class='button'>Legg til oppskrift</a>";
+                    echo "<a href='brukerliste.php' class='button'>Bruker oversikt</a>";
+                }
+            }
         }
 
         ?>
@@ -128,9 +146,13 @@
                     echo "<div class='price'>" . $oppskrift['vanskelighetsgrad'] . "</div>";
                     echo "<a href='oppskrift_side.php?id=" . $oppskrift['id'] . "' class='button'>Se oppskrift</a>";
                     require_once "includes/common.php";
-                    $userinfo = getbrukerinfo($_SESSION['bruker_id']);
-                    if ($userinfo["rolle"] == "admin") {
-                        echo "<a href='slett_oppskrift.php?id=" . $oppskrift['id'] . "' class='slett-button'>Slett oppskrift</a>";
+                    if (isset($_SESSION['bruker_id'])) {
+                        $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+                        if ($userinfo != null) {
+                            if ($userinfo["rolle"] == "admin") {
+                                echo "<a href='slett_oppskrift.php?id=" . $oppskrift['id'] . "' class='slett-button'>Slett oppskrift</a>";
+                            }
+                        }
                     }
 
                     echo "</div>";

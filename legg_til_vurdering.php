@@ -2,7 +2,9 @@
 require_once "includes/dbh.inc.php";
 session_start();
 
-$bruker_id = $_SESSION['bruker_id'];
+if (isset($_SESSION['bruker_id'])) {
+    $bruker_id = $_SESSION['bruker_id'];
+}
 
 //kjekker om man er logget in
 if (!isset($bruker_id)) {

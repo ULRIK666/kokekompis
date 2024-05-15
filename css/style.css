@@ -167,6 +167,19 @@ img.maxwidth {
     cursor: pointer;
 }
 
+.slett-ingrediens {
+    background-color: #af4c4c;
+    color: white;
+    padding: 2px;
+    margin: 5px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 
 /* input design */
 
