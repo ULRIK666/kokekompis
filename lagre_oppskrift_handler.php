@@ -1,4 +1,23 @@
 <?php
+session_start();
+        require_once "includes/common.php";
+        if (isset($_SESSION['bruker_id'])) {
+            $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+            if ($userinfo != null) {
+                if ($userinfo["rolle"] != "admin" && $userinfo["rolle"] != "kokk") {
+                    echo "har ikke lov til å legge til oppskrifter siden du ikke er admin eller kokk";
+                    exit();
+                }
+            } else {
+                echo "Fant ingen bruker med denne id-en";
+                exit();
+            }
+        } else {
+            echo "Fant ikke bruker_id";
+            exit();
+        }
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // henter det som er fylt ut i formen 
     $tittel = $_POST["tittel"];

@@ -23,8 +23,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $oppskrift_id = $_GET['oppskrift_id'];
 }
 
+
+
 if (isset($_SESSION['bruker_id'])) {
     $bruker_id = $_SESSION['bruker_id'];
+
+
+    require_once "includes/common.php";
+    $userinfo = getbrukerinfo($bruker_id);
+    if ($userinfo != null) {
+        if ($userinfo["rolle"] != "admin" && $userinfo["rolle"] != "kokk") {
+            echo "har ikke lov til å endre ingredienser siden du ikke er admin eller kokk";
+            exit();
+        }
+    } else {
+        echo "Fant ingen bruker med denne id-en";
+        exit();
+    }
+
+
     try {
         // Koble til databasen
         if ($handling == "legg_til") {

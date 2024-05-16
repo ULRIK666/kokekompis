@@ -1,3 +1,23 @@
+<?php
+session_start();
+        require_once "includes/common.php";
+        if (isset($_SESSION['bruker_id'])) {
+            $userinfo = getbrukerinfo($_SESSION['bruker_id']);
+            if ($userinfo != null) {
+                if ($userinfo["rolle"] != "admin") {
+                    echo "har ikke lov til å se brukerliste siden du ikke er admin bruker";
+                    exit();
+                } 
+            } else {
+                echo "Fant ingen bruker med denne id-en";
+                exit();
+            }
+        } else {
+            echo "Fant ikke bruker_id";
+            exit();
+        }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,7 +91,6 @@
                     <!-- forteller hvem som er logget in -->
 
                     <?php
-                    session_start();
                     require "includes/dbh.inc.php";
                     require_once "includes/common.php";
                     echo show_userinfo($_SESSION['bruker_id']);
