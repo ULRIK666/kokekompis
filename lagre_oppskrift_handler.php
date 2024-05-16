@@ -14,7 +14,7 @@ session_start();
             }
         } else {
             echo "Fant ikke bruker_id";
-            exit();
+            exit(); 
         }
 
 
