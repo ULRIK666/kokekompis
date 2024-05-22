@@ -1,8 +1,8 @@
 <?php 
 // lager database forbinelsen
 $dsn = "mysql:host=localhost;dbname=kokekompis";
-$dbusername = "root";
-$dbpassword = "";
+$dbusername = "kokekompis";
+$dbpassword = "cheese3.14";
 
 
 try {
