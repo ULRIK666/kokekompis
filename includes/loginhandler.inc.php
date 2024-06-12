@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         require_once "dbh.inc.php";
 
         // henter nødvendig informasjon fra bruker så man kan logge inn
-        $query = "SELECT brukere.id, brukere.passord, roller.rolle 
+        $query = "SELECT brukere.id, brukere.passord, roller.rolle, brukere.slettet_tid
                   FROM brukere 
                   INNER JOIN roller ON brukere.rolle_id = roller.id 
                   WHERE brukere.brukernavn = :brukernavn";
@@ -30,8 +30,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $bruker_id = $result["id"];
             $signup_pwd = $result["passord"];
             $rolle = $result["rolle"];
+            $slettet_tid = $result["slettet_tid"];
         }
-
+        if ($slettet_tid != null) {
+            $_SESSION['error_message'] = "Brukeren din ble slettet $slettet_tid";
+            header("location: ../log_inn.php");
+            exit();
+        }
         // sjekker om det er riktig passord
         if ($passord == $signup_pwd) {
             $_SESSION['bruker_id'] = $bruker_id;
