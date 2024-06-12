@@ -67,7 +67,7 @@
 
         </div>
     </header>
-
+<!--no comento -->
     <div class="kategori_overskrift">
         <h1>Oppskrifter</h1>
     </div>
