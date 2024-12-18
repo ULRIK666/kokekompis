@@ -5,6 +5,14 @@
     try {
         require_once "includes/dbh.inc.php";
 
+    $deleteQuery = "DELETE FROM ingrediens_mengde WHERE oppskrift_id = :id";
+    $stmt = $pdo->prepare($deleteQuery);
+
+    $stmt->bindParam(":id", $id);
+
+
+    $stmt->execute();
+        
     $deleteQuery = "DELETE FROM oppskrifter WHERE id = :id";
     $stmt = $pdo->prepare($deleteQuery);
 
@@ -12,6 +20,7 @@
 
 
     $stmt->execute();
+    
 
     header("location: index.php");
 

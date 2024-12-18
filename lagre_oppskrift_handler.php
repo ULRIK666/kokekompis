@@ -29,8 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fremgangsmaate = $_POST["fremgangsmåte"];
     $utgitt_dato = date("Y-m-d H:i:s");
     try {
-        require_once "includes/dbh.inc.php";
-
+        require "includes/dbh.inc.php";
         // skriver in info om den nye brukeren i tabellen brukere 
         $query = "INSERT INTO oppskrifter (tittel, utgitt_dato, vanskelighetsgrad, anbefalt_porsjoner, kategori_id, beregnet_tid, pris, fremgangsmåte) 
                   VALUES (:tittel, :utgitt_dato, :vanskelighetsgrad , :anbefalt_porsjoner, :kategori_id, :beregnet_tid, :pris, :fremgangsmaate);"; // setter rolle id til 1 som er kunde 
